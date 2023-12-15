@@ -1,0 +1,421 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DXGRJ2VF9Y"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-DXGRJ2VF9Y');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gnomia | The Social Network for YOU!</title>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/site.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
+    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+</head>
+<body data-simplebar ng-controller="mainCtrl">
+    <div class="wrapper">
+        <img class="main-logo" src="images/logo.png" alt="" onclick="location.href = '/'" style="cursor:pointer;" />
+        <div class="inner">
+            <nav>
+                <div class="top">
+                    <img class="logo" src="images/logo.png" alt="" onclick="location.href = '/'" style="cursor:pointer;" />
+                    <input class="txt-search" type="text" ng-keyup="search($(this).val())" ng-blur="resetResults()" placeholder="Search..." />
+                    <div ng-if="isMember" class="lnk-home" ng-click="goToPage('start')">
+                        <img id="top-avatar" class="img-profile-sm owner-avatar" ng-src="{{user.avatar}}" alt="" />
+                        Start
+                    </div>
+                    <ul>
+                        <li ng-if="pageInfo.PrivatePosts === false && isOwner === false" class="lnk-main">
+                            <a ng-href="#!/{{pageId}}/start">
+                                <i class="material-icons">home</i>
+                                Home
+                            </a>
+                        </li>
+                        <li class="lnk-main">
+                            <a ng-href="#!/{{pageId}}/">
+                                <i class="material-icons">account_circle</i>
+                                Profile
+                            </a>
+                        </li>
+                        <li ng-if="!pageInfo.PrivateFriends" class="lnk-main">
+                            <a ng-href="#!/{{pageId}}/friends">
+                                <i class="material-icons">people_alt</i>
+                                Friends
+                            </a>
+                            <span class="notif" ng-if="friendNotif > 0">{{friendNotif}}</span>
+                        </li>
+                        <li ng-if="!pageInfo.PrivatePictures" class="lnk-main">
+                            <a ng-href="#!/{{pageId}}/pictures">
+                                <i class="material-icons">camera_enhance</i>
+                                Pictures
+                            </a>
+                        </li>
+                        <li ng-if="isOwner" class="lnk-main">
+                            <a class="btn btn-messages" ng-href="#!/{{id}}/messages">
+                                <i class="material-icons">chat_bubble</i>
+                                Messages
+                            </a>
+                        </li>
+                        <li ng-if="isOwner" class="lnk-main">
+                            <a class="btn" ng-href="#!/{{id}}/groups">
+                                <i class="material-icons">supervised_user_circle</i>
+                                Groups
+                            </a>
+                        </li>
+                        <li class="lnk-main li-toggle">
+                            <a ng-href="#!/{{pageId}}/news/general">
+                                <i class="material-icons">sticky_note_2</i>
+                                News
+                            </a>
+                        </li>
+                        <li ng-if="!pageInfo.PrivateCV" class="lnk-main li-toggle">
+                            <a ng-href="#!/{{pageId}}/cv">
+                                <i class="material-icons">work</i>
+                                Jobs
+                            </a>
+                        </li>
+                        <li class="lnk-main li-toggle">
+                            <a ng-href="#!/{{pageId}}/games">
+                                <i class="material-icons">videogame_asset</i>
+                                Games
+                            </a>
+                        </li>
+                        <li ng-if="isMember" class="lnk-main li-toggle">
+                            <a data-menu="settings">
+                                <i class="material-icons">settings</i>
+                                Settings
+                            </a>
+                        </li>
+                        <li ng-if="isMember" class="lnk-main li-toggle">
+                            <a data-menu="privacy">
+                                <i class="material-icons">security</i>
+                                Privacy
+                            </a>
+                        </li>
+                        <li ng-if="isMember" class="lnk-main li-toggle">
+                            <a data-menu="profile">
+                                <i class="material-icons">info</i>
+                                Information
+                            </a>
+                        </li>
+                        <li ng-if="isOwner === false && isMember" class="lnk-main">
+                            <a ng-click="addFriend($event)">
+                                <i class="material-icons">group_add</i>
+                                Connect
+                            </a>
+                        </li>
+                        <li ng-if="isMember" class="lnk-main">
+                            <a class="lnk-logout" ng-show="isMember">
+                                <i class="material-icons">power_settings_new</i>
+                                Logout
+                            </a>
+                        </li>
+                        <li class="lnk-main li-more">
+                            <a class="btn btn-messages">
+                                <i class="material-icons">more_horiz</i>
+                                More
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <main>
+            <div class="inner" ng-view>
+
+            </div>
+        </main>
+        <footer>
+            &copy; Copyright 2018 <a class="anchor" href="http://www.ironheaddigital.de">Ironhead Digitalagentur</a>
+        </footer>
+    </div>
+    <ul class="popup1">
+        <li class="btn-profile" data-menu="profile">Profile</li>
+        <li data-menu="privacy">Privacy</li>
+        <li data-menu="settings">Settings</li>
+    </ul>
+    <div class="search-results">
+        <div class="no-results" ng-show="results.length === 0 && results">No results found.</div>
+        <div class="result" ng-repeat="r in results" ng-click="goToUser(r.Id)">
+            <img class="img-profile-sm" ng-src="../users/{{r.Id}}/avatar.png" alt="" />
+            <span>{{r.FirstName}} {{r.LastName}}</span>
+            <span>{{r.City ? r. City : '&hellip;'}}, {{r.Country ? r.Country : '&hellip;'}}</span>
+        </div>
+    </div>
+    <div class="profile menu">
+        <i class="material-icons menu-close">arrow_forward</i>
+        <form class="frm-profile" ng-submit="saveProfileSettings()">
+            <table>
+                <tr>
+                    <td>City</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="city" ng-model="user.City" /></td>
+                </tr>
+                <tr>
+                    <td>Country</td>
+                </tr>
+                <tr>
+                    <td>
+                        <select id="country" ng-model="user.Country">
+                            <option selected>{{user.Country}}</option>
+                            <option ng-repeat="c in countries" ng-if="user.Country !== c">{{c}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>City of Birth</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="city-ob" ng-model="user.CityOfBirth" /></td>
+                </tr>
+                <tr>
+                    <td>Country of Birth</td>
+                </tr>
+                <tr>
+                    <td>
+                        <select id="country-ob" ng-model="user.CountryOfBirth">
+                            <option selected>{{user.CountryOfBirth}}</option>
+                            <option ng-repeat="c in countries" ng-if="user.CountryOfBirth !== c">{{c}}</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <hr />
+            <table>
+                <tr>
+                    <td>Birthdate</td>
+                </tr>
+                <tr>
+                    <td><input type="date" id="birthdate" ng-model="user.Birthdate" /></td>
+                </tr>
+            </table>
+            <hr />
+            <table>
+                <tr>
+                    <td>Occupation</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="occupation" ng-model="user.Occupation" /></td>
+                </tr>
+                <tr>
+                    <td>Work</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="work" ng-model="user.Work" /></td>
+                </tr>
+                <tr>
+                    <td>College</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="college" ng-model="user.College" /></td>
+                </tr>
+                <tr>
+                    <td>School</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="school" ng-model="user.School" /></td>
+                </tr>
+                <tr>
+                    <td>Website</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="website" ng-model="user.Website" /></td>
+                </tr>
+                <tr>
+                    <td>Relationship Status</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="relationship" ng-model="user.Relationship" /></td>
+                </tr>
+                <tr>
+                    <td><button type="submit" class="btn">SAVE</button>&nbsp;&nbsp;<span class="msg" style="display:none;">Changes Saved!</span></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="privacy menu">
+        <i class="material-icons menu-close">arrow_forward</i>
+        <form class="frm-privacy" ng-submit="savePrivacySettings()">
+            <table>
+                <tr>
+                    <td>Make my Posts Private</td>
+                </tr>
+                <tr>
+                    <td><i class="material-icons {{user.PrivatePosts ? 'active' : ''}}">{{user.PrivatePosts ? 'toggle_on' : 'toggle_off'}}</i><input type="hidden" id="privatePosts" ng-value="user.PrivatePosts" /></td>
+                </tr>
+                <tr>
+                    <td>Make my Pictures Private</td>
+                </tr>
+                <tr>
+                    <td><i class="material-icons {{user.PrivatePictures ? 'active' : ''}}">{{user.PrivatePictures ? 'toggle_on' : 'toggle_off'}}</i><input type="hidden" id="privatePictures" ng-value="user.PrivatePictures" /></td>
+                </tr>
+                <tr>
+                    <td>Make my Friends Private</td>
+                </tr>
+                <tr>
+                    <td><i class="material-icons {{user.PrivateFriends ? 'active' : ''}}">{{user.PrivateFriends ? 'toggle_on' : 'toggle_off'}}</i><input type="hidden" id="privateFriends" ng-value="user.PrivateFriends" /></td>
+                </tr>
+                <tr>
+                    <td>Make my CV Private</td>
+                </tr>
+                <tr>
+                    <td><i class="material-icons {{user.PrivateCV ? 'active' : ''}}">{{user.PrivateCV ? 'toggle_on' : 'toggle_off'}}</i><input type="hidden" id="privateCV" ng-value="user.PrivateCV" /></td>
+                </tr>
+                <tr>
+                    <td>Make my Email Private</td>
+                </tr>
+                <tr>
+                    <td><i class="material-icons {{user.PrivateEmail ? 'active' : ''}}">{{user.PrivateEmail ? 'toggle_on' : 'toggle_off'}}</i><input type="hidden" id="privateEmail" ng-value="user.PrivateEmail" /></td>
+                </tr>
+                <tr>
+                    <td><button class="btn" type="submit">SAVE</button>&nbsp;&nbsp;<span class="msg" style="display:none;">Changes Saved!</span></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="settings menu">
+        <i class="material-icons menu-close">arrow_forward</i>
+        <form class="frm-settings" ng-submit="saveSettings()">
+            <table>
+                <tr>
+                    <td>First Name</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="first" ng-model="user.FirstName" /></td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="last" ng-model="user.LastName" /></td>
+                </tr>
+            </table>
+            <hr />
+            <table>
+                <tr>
+                    <td>Email</td>
+                </tr>
+                <tr>
+                    <td><input type="email" id="email" ng-model="user.Email" /></td>
+                </tr>
+                <tr>
+                    <td>Repeat Email</td>
+                </tr>
+                <tr>
+                    <td><input type="email" id="reemail" /></td>
+                </tr>
+                <tr>
+                    <td>Enable Invisible Mode</td>
+                </tr>
+                <tr>
+                    <td><i class="material-icons {{user.IsInvisible ? 'active' : ''}}">{{user.IsInvisible ? 'toggle_on' : 'toggle_off'}}</i><input type="hidden" id="isInvisible" ng-value="user.IsInvisible" /></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                </tr>
+                <tr>
+                    <td><input type="password" id="pass" /></td>
+                </tr>
+                <tr>
+                    <td>Repeat Password</td>
+                </tr>
+                <tr>
+                    <td><input type="password" id="repass" /></td>
+                </tr>
+                <tr>
+                    <td><button type="submit" class="btn">SAVE</button>&nbsp;&nbsp;<span class="msg" style="display:none;">Changes Saved!</span></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="preloader-line"></div>
+    <div class="preview">
+        <img src="#" alt="" />
+    </div>
+    <div class="preloader">
+        <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        window.jquery || document.write('<script src="js/lib/jquery.min.js"><\/script>');
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDc8S4btsJOLEFD4jVxqK9W5spaK3JFlc"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.2/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.2/angular-route.min.js"></script>
+    <script src="js/app/app.js"></script>
+    <script src="js/app/controllers/mainCtrl.js"></script>
+    <script src="js/app/controllers/cvCtrl.js"></script>
+    <script src="js/app/controllers/friendsCtrl.js"></script>
+    <script src="js/app/controllers/gamesCtrl.js"></script>
+    <script src="js/app/controllers/groupsCtrl.js"></script>
+    <script src="js/app/controllers/jobsCtrl.js"></script>
+    <script src="js/app/controllers/messagesCtrl.js"></script>
+    <script src="js/app/controllers/newsCtrl.js"></script>
+    <script src="js/app/controllers/picturesCtrl.js"></script>
+    <script src="js/app/controllers/profileCtrl.js"></script>
+    <script src="js/app/controllers/startCtrl.js"></script>
+    <script>
+        (function () {
+            $('.lnk-menu').click(function () {
+                alert();
+            });
+            'use strict';
+            $('.menu-close').click(function () {
+                $(this).parent().animate({ right: '-303px' }, 150, 'swing');
+            });
+            $('.icn-settings').click(function () {
+                $('.popup1').fadeToggle(150);
+            });
+            $(document).on('click', '[data-menu]', function (e) {
+                $('.' + $(this).attr('data-menu')).animate({ right: 0 }, 150, 'swing');
+            });
+            $('.menu td .material-icons').click(function () {
+                $(this).toggleClass('active');
+                if ($(this).html() === 'toggle_on') {
+                    $(this).html('toggle_off');
+                    $(this).next().val(false);
+                } else {
+                    $(this).html('toggle_on');
+                    $(this).next().val(true);
+                }
+            });
+            $(document).on('change', '#file-avatar', function () {
+                $('.frm-avatar').submit();
+                $('.preloader-line').animate({ width: '100%' }, 7000, 'swing', function () {
+                    $('.preloader-line').css('width', 0);
+                    $('.owner-avatar').attr('src', $('#top-avatar').attr('src') + '?' + Math.random);
+                });
+            });
+            $(document).on('click', '.lnk-logout', function () {
+                $.get('../api/bee/setoffline/' + (localStorage.getItem('id') ? localStorage.getItem('id') : sessionStorage.getItem('id')))
+                    .done(function () {
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        location.href = '/';
+                    });
+            });
+            $(document).on('click', '.li-more', function () {
+                $('.li-toggle').toggle();
+                if ($('.li-toggle').css('display') === 'none') {
+                    $(this).html('<a class="btn btn-messages"><i class="material-icons">more_horiz</i>More</a>');
+                } else {
+                    $(this).html('<a class="btn btn-messages"><i class="material-icons">more_horiz</i>Less</a>');
+                }
+            });
+            $(window).on('beforeunload', function () {
+                $.get('../api/bee/setoffline/' + (localStorage.getItem('id') ? localStorage.getItem('id') : sessionStorage.getItem('id')));
+            });
+        }());
+    </script>
+</body>
+</html>

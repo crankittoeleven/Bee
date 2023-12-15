@@ -1,0 +1,15 @@
+﻿<div class="contacts">
+    <article class="pending" ng-repeat="f in friends.pending">
+        <a ng-href="javascript:void(0)" class="btn" ng-click="acceptFriend(f.From.Id)">Accept</a>
+        <a ng-href="javascript:void(0)" class="btn" ng-click="declineFriend(f.From.Id)">Decline</a>
+        <img class="img-profile-sm" ng-src="../users/{{f.From.Id}}/avatar.png" alt="" />
+        <span><strong>{{f.From.FirstName}} {{f.From.LastName}}</strong> sent you a friend request.</span>
+    </article>
+    <div class="contact" ng-repeat="f in friends.accepted">
+        <img class="img-profile-lg" ng-src="../users/{{f.Id}}/avatar.png" alt="" />
+        <h5>{{f.FirstName}} {{f.LastName}}</h5>
+        <span>{{f.City ? f.City : '&hellip;'}}, {{f.Country ? f.Country : '&hellip;'}}</span>
+        <a ng-href="../app/#!/{{f.Id}}/" class="btn">PROFILE</a>
+        <i class="material-icons" ng-click="deleteFriend($event, f.Id)" ng-if="isOwner">delete</i>
+    </div>
+</div>

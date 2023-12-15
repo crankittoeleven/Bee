@@ -1,0 +1,56 @@
+﻿@using Bee.Models;
+@using System.Security.Cryptography;
+@using System.Text;
+@{
+    string email = Request.Form["email"];
+    string password = Request.Form["password"];
+    bool remember = false;
+
+    Boolean.TryParse(Request.Form["remember"], out remember);
+
+    string token = string.Empty;
+    int id = 0;
+
+    if(string.IsNullOrEmpty(email) ||
+        string.IsNullOrWhiteSpace(email) ||
+        string.IsNullOrWhiteSpace(password) ||
+        password.Length < 6)
+    {
+        Response.Redirect("/?error");
+    }
+
+    using (AppDbContext _db = new AppDbContext())
+    {
+        using (SHA384 sha = new SHA384Managed())
+        {
+            password = BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(password))).Replace("-", string.Empty).ToLower();
+            token = BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(password + email))).Replace("-", string.Empty).ToLower();
+        }
+
+        if(_db.Users.Where(u => u.Email == email).FirstOrDefault() == null || _db.Users.Where(u => u.Email == email).FirstOrDefault().Password != password)
+        {
+            Response.Redirect("/?error");
+        }
+
+        id = _db.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefault().Id;
+
+        _db.SaveChanges();
+    }
+}
+<script>
+    (function () {
+        'use strict';
+        if (@id > 0 && @remember.ToString().ToLower()) {
+            localStorage.setItem('id', @id);
+            localStorage.setItem('token', '@token');
+            location.href = '/app/#!/@id';
+        } else if (@id > 0 && !@remember.ToString().ToLower()) {
+            sessionStorage.setItem('id', @id);
+            sessionStorage.setItem('token', '@token');
+            location.href = '/app/#!/@id';
+        } else {
+            location.href = '/?error';
+        }
+    }());
+</script>
+

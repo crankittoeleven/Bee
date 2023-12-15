@@ -1,0 +1,192 @@
+﻿<div class="cv panel">
+    <section class="work">
+        <h2>Work Experience<i ng-show="isOwner" class="material-icons" data-popup="work">create</i></h2>
+        <div class="company" ng-repeat="w in work">
+            <h3>{{w.Title}}<a ng-if="isOwner" href="javascript:void(0)" ng-click="deleteWork($event, w.Id); $event.preventDefault();"> | Remove</a></h3>
+            <span><a href="javascript:void(0)" ng-click="definition(w.Company); $event.preventDefault();">{{w.Company}}</a> | </span>
+            <time>{{w.From}} &ndash; {{w.To}}</time>
+            <br />
+            <span ng-if="w.Size > 999">Company Size: 1,000 &ndash; 10,000</span>
+            <span ng-if="w.Size > 99 && w.Size < 1000">Company Size: 100 &ndash; 1,000</span>
+            <span ng-if="w.Size < 100">Company Size: 1 &ndash; 100</span>
+        </div>
+    </section>
+    <section class="education">
+        <h2>Education<i ng-show="isOwner" class="material-icons" data-popup="education">create</i></h2>
+        <div class="school" ng-repeat="e in education">
+            <h3>{{e.Title}}<a ng-if="isOwner" href="javascript:void(0)" ng-click="deleteEducation($event, e.Id); $event.preventDefault();"> | Remove</a></h3>
+            <span><a href="javascript:void(0)" ng-click="definition(e.Institute); $event.preventDefault();">{{e.Institute}}</a> | </span>
+            <time>{{e.From}} &ndash; {{e.To}}</time><br />
+            <span>{{e.Description}}</span>
+        </div>
+    </section>
+    <section class="skills">
+        <h2>Skills &amp; Endorsements<i ng-show="isOwner" class="material-icons" data-popup="skills">create</i></h2>
+        <div class="all">
+            <span ng-repeat="s in skills" class="skill">{{s.Title}}<i ng-show="isOwner" class="material-icons" ng-click="deleteSkill($event, s.Id)">remove_circle</i></span>
+        </div>
+    </section>
+    <section class="languages">
+        <h2>Languages<i ng-show="isOwner" class="material-icons" data-popup="languages">create</i></h2>
+        <div class="language" ng-repeat="l in languages">
+            <h4>{{l.Title}} ({{l.Level === 100 ? 'Fluent' : ''}}{{l.Level === 75 ? 'Very Good' : ''}}{{l.Level === 50 ? 'Good' : ''}}{{l.Level === 25 ? 'Poor' : ''}})<a ng-if="isOwner" href="javascript:void(0)" ng-click="deleteLanguage($event, l.Id); $event.preventDefault();"> | Remove</a></h4>
+            <div style="width:100%; height:20px; margin:5px 0 10px 0; background:rgba(0, 0, 0, .1); filter:grayscale(50%);"><div style="width:{{l.Level}}%; height:20px; {{l.Level === 100 ? 'background:#75B753' : ''}}{{l.Level === 75 ? 'background:#6CB4C3' : ''}}{{l.Level === 50 ? 'background:#EAE982' : ''}}{{l.Level === 25 ? 'background:#B75453' : ''}}"></div></div>
+        </div>
+    </section>
+</div>
+<div class="popup2 pop-work">
+    <form class="frm-work" ng-submit="addWork($event)">
+        <h3>Add Work</h3>
+        <table>
+            <tr>
+                <td>Title</td>
+            </tr>
+            <tr>
+                <td><input type="text" id="work-title" required /></td>
+            </tr>
+            <tr>
+                <td>Company</td>
+            </tr>
+            <tr>
+                <td><input type="text" id="work-company" required /></td>
+            </tr>
+            <tr>
+                <td>From</td>
+            </tr>
+            <tr>
+                <td><input type="date" id="work-from" required /></td>
+            </tr>
+            <tr>
+                <td>To</td>
+            </tr>
+            <tr>
+                <td><input type="date" id="work-to" required /></td>
+            </tr>
+            <tr>
+                <td>Company Size</td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="work-size" required>
+                        <option value="1">1 &ndash; 100</option>
+                        <option value="100">100 &ndash; 1,000</option>
+                        <option value="1000">1,000 &ndash; 10,000</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><button class="btn" type="submit">SAVE</button><a class="lnk-close" href="javascript:void(0)">Close</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="popup2 pop-education">
+    <form class="frm-education" ng-submit="addEducation($event)">
+        <h3>Add Education</h3>
+        <table>
+            <tr>
+                <td>Title</td>
+            </tr>
+            <tr>
+                <td><input type="text" id="edu-title" required /></td>
+            </tr>
+            <tr>
+                <td>Institute</td>
+            </tr>
+            <tr>
+                <td><input type="text" id="edu-institute" required /></td>
+            </tr>
+            <tr>
+                <td>From</td>
+            </tr>
+            <tr>
+                <td><input type="date" id="edu-from" required /></td>
+            </tr>
+            <tr>
+                <td>To</td>
+            </tr>
+            <tr>
+                <td><input type="date" id="edu-to" required /></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="edu-description" required />
+                </td>
+            </tr>
+            <tr>
+                <td><button class="btn" type="submit">SAVE</button><a class="lnk-close" href="javascript:void(0)">Close</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="popup2 pop-skills">
+    <form class="frm-skills" ng-submit="addSkill($event)">
+        <h3>Add Skills</h3>
+        <table>
+            <tr>
+                <td>Title</td>
+            </tr>
+            <tr>
+                <td><input type="text" id="skills-title" required /></td>
+            </tr>
+            <tr>
+                <td><button class="btn" type="submit">SAVE</button><a class="lnk-close" href="javascript:void(0)">Close</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="popup2 pop-languages">
+    <form class="frm-languages" ng-submit="addLanguage($event)">
+        <h3>Add Languages</h3>
+        <table>
+            <tr>
+                <td>Language</td>
+            </tr>
+            <tr>
+                <td><input type="text" id="lang-title" /></td>
+            </tr>
+            <tr>
+                <td>Level</td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="lang-level">
+                        <option value="100">Fluent</option>
+                        <option value="75">Very Good</option>
+                        <option value="50">Good</option>
+                        <option value="25">Poor</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><button class="btn" type="submit">SAVE</button><a class="lnk-close" href="javascript:void(0)">Close</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="popup3">
+    <h3></h3>
+    <br />
+    <p></p>
+    <br />
+    <a class="lnk-close" href="javascript:void(0)">Close</a>
+</div>
+<script>
+    (function () {
+        $('[data-popup]').click(function () {
+            $('.pop-' + $(this).attr('data-popup')).fadeToggle(150);
+        });
+        $('.popup2 .lnk-close').click(function (evt) {
+            evt.preventDefault();
+            $(this).closest('.popup2').fadeToggle(150);
+        });
+        $('.popup3 .lnk-close').click(function (evt) {
+            evt.preventDefault();
+            $(this).closest('.popup3').fadeOut(150);
+        });
+    }());
+</script>
+

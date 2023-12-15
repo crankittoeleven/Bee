@@ -1,0 +1,121 @@
+﻿<div class="info panel">
+    <header>Information</header>
+    <ul>
+        <li><i class="material-icons">work</i>Works at <a class="anchor"  href="javascript:void(0)" ng-click="definition(profile.Work); $event.preventDefault();" ng-show="profile.Work">{{profile.Work}}</a><span ng-hide="profile.Work">&hellip;</span></li>
+        <li><i class="material-icons">school</i>Studied at <a class="anchor" href="javascript:void(0)" ng-click="definition(profile.College); $event.preventDefault();" ng-show="profile.College">{{profile.College}}</a><span ng-hide="profile.College">&hellip;</span></li>
+        <li><i class="material-icons">directions_bus</i>Went to <a class="anchor"  href="javascript:void(0)" ng-click="definition(profile.School); $event.preventDefault();" ng-show="profile.School">{{profile.School}}</a><span ng-hide="profile.School">&hellip;</span></li>
+        <li><i class="material-icons">location_city</i>Lives in <a class="anchor"  href="javascript:void(0)" ng-click="definition(profile.City || profile.Country); $event.preventDefault();" ng-show="profile.City || profile.Country">{{profile.City}}<span ng-show="profile.City && profile.Country">,</span> {{profile.Country}}</a><span ng-hide="profile.City || profile.Country">&hellip;</span></li>
+        <li><i class="material-icons">child_care</i>From <a class="anchor"  href="javascript:void(0)" ng-click="definition(profile.CityOfBirth || profile.CountryOfBirth); $event.preventDefault();" ng-show="profile.CityOfBirth || profile.CountryOfBirth">{{profile.CityOfBirth}}<span ng-show="profile.CityOfBirth && profile.CountryOfBirth">,</span> {{profile.CountryOfBirth}}</a><span ng-hide="profile.CityOfBirth || profile.CountryOfBirth">&hellip;</span></li>
+        <li><i class="material-icons">favorite</i><span ng-show="profile.Relationship">{{profile.Relationship}}</span><span ng-hide="profile.Relationship">&hellip;</span></li>
+        <li><br /><i class="material-icons">visibility</i>Followed by <a class="anchor" ng-href="#!/{{profile.Id}}/friends">{{friends.length}} people</a></li>
+    </ul>
+    <a class="anchor more" ng-href="#!/{{profile.Id}}/cv">See {{profile.FirstName}}&lsquo;s CV</a>
+</div>
+<div class="card panel">
+    <img class="img-profile-lg owner-avatar" ng-src="{{pageInfo.avatar}}" alt="" />
+    <form ng-show="isOwner" method="post" action="../UploadAvatar.cshtml" target="fileFrame" class="frm-avatar" enctype="multipart/form-data">
+        <i class="material-icons">vertical_align_top</i>
+        <input type="file" id="file-avatar" name="avatar" accept=".png, .PNG, .jpg, .JPG, .gif, .GIF" />
+        <input type="hidden" name="id" ng-value="id" />
+        <input type="hidden" name="token" ng-value="token" />
+    </form>
+    <iframe id="fileFrame" name="fileFrame" src="" style="display:none;"></iframe>
+    <p>
+        <h3>{{profile.FirstName}} {{profile.LastName}}</h3>
+        {{profile.City ? profile.City : '&hellip;'}}, {{profile.Country ? profile.Country : '&hellip;'}}
+    </p>
+</div>
+<div class="about panel">
+    <header>About</header>
+    <div id="accordion">
+        <h3>Work and Education</h3>
+        <div>
+            <p>
+                {{profile.FirstName}} currently works for <a class="anchor"  href="javascript: void(0);" ng-click="definition(profile.Work); $event.preventDefault();" ng-show="profile.Work">{{profile.Work}}</a><span ng-hide="profile.Work">&hellip;</span>.
+                {{profile.FirstName}} went to college at <a class="anchor"  href="javascript:void(0)" ng-click="definition(profile.College); $event.preventDefault();" ng-show="profile.College">{{profile.College}}</a><span ng-hide="profile.College">&hellip;</span>,
+                after graduating from the <a class="anchor"  href="javascript:void(0)" ng-click="definition(profile.School); $event.preventDefault();" ng-show="profile.School">{{profile.School}}</a><span ng-hide="profile.School">&hellip;</span> school.
+            </p>
+        </div>
+        <h3>Places and Destinations</h3>
+        <div>
+            <p>
+                {{profile.FirstName}} was born in and originates from <a class="anchor"  href="javascript:void(0)" ng-click="definition(profile.CityOfBirth || profile.CountryOfBirth); $event.preventDefault();" ng-show="profile.CityOfBirth || profile.CountryOfBirth">
+                    {{profile.CityOfBirth}}<span ng-show="profile.CityOfBirth && profile.CountryOfBirth">,</span> {{profile.CountryOfBirth}}</a><span ng-hide="profile.CityOfBirth || profile.CountryOfBirth">&hellip;</span>.
+                {{profile.FirstName}} currently lives and resides in <a class="anchor"  href="javascript:void(0)" ng-click="definition(profile.City || profile.Country); $event.preventDefault();" ng-show="profile.City || profile.Country">
+                    {{profile.City}}<span ng-show="profile.City && profile.Country">,</span> {{profile.Country}}</a><span ng-hide="profile.City || profile.Country">&hellip;</span>.
+            </p>
+        </div>
+        <h3>Contact Information</h3>
+        <div>
+            <p>
+                {{profile.FirstName}}'s profile ID is <a href="#!/{{profile.Id}}/" class="anchor">{{profile.Id}}</a>. You can reach {{profile.FirstName}} at <a class="anchor" ng-href="mailto:{{profile.Email}}" ng-hide="profile.PrivateEmail">{{profile.Email}}</a><span ng-show="profile.PrivateEmail">&hellip;</span>.
+                {{profile.FirstName}}'s website address is <a class="anchor" href="{{profile.Website}}" target="_blank" ng-show="profile.Website">{{profile.Website}}</a><span ng-hide="profile.Website">&hellip;</span>.
+            </p>
+        </div>
+        <h3>Relationships</h3>
+        <div>
+            <p>
+                {{profile.FirstName}} is {{profile.Relationship ? profile.Relationship : '&hellip;'}}!
+            </p>
+        </div>
+    </div>
+</div>
+<div class="friends panel">
+    <h3>Friends</h3>
+    <ul class="friends-flex">
+        <li ng-repeat="f in friends" title="{{f.FirstName}} {{f.LastName}}" ng-click="goToFriend(f.Id)">
+            <img class="img-profile-lg" ng-src="../users/{{f.Id}}/avatar.png?{{getRandom()}}" alt="" />
+            <h5>{{f.FirstName}} {{f.LastName}}</h5>
+            <span>{{f.City ? f.City : '&hellip;'}}, {{f.Country ? f.Country : '&hellip;'}}</span>
+        </li>
+    </ul>
+    <a class="anchor more" ng-href="#!/{{profile.Id}}/friends">See all {{friendCount}} friends</a>
+</div>
+<div class="pictures panel">
+    <h3>Pictures</h3>
+    <div class="slider">
+        <img data-preview="../users/{{profile.Id}}/{{p}}" onclick="$('.preview').fadeIn(150); $('.preview img').attr('src', $(this).attr('data-preview'));" ng-src="../users/{{profile.Id}}/{{p}}" alt="" ng-repeat="p in pictures" style="cursor:pointer;" />
+    </div>
+    <div class="arrow-left">
+        <img src="images/right-arrow.svg" alt="" />
+    </div>
+    <div class="arrow-right">
+        <img src="images/right-arrow.svg" alt="" />
+    </div>
+    <a class="anchor more" ng-href="#!/{{profile.Id}}/pictures">See all {{pictures.length}} pictures</a>
+</div>
+<div class="achievements panel">
+    <h3>Achievements</h3>
+    <img src="images/{{level}}.png" alt="" />
+    <h2 style="text-transform:capitalize;">{{level}} :)</h2>
+    <p>
+        John has <a class="anchor" ng-href="#!/{{profile.Id}}/start">posted</a> {{postCount}} times, uploaded {{pictures.length}} <a class="anchor" ng-href="#!/{{profile.Id}}/pictures">pictures</a> and made {{friendCount}} <a class="anchor" ng-href="#!/{{profile.Id}}/friends">friendships</a>.
+    </p>
+</div>
+<div class="popup3">
+    <h3></h3>
+    <br />
+    <p></p>
+    <br />
+    <a class="lnk-close" href="javascript:void(0)">Close</a>
+</div>
+<script>
+    'use strict';
+    (function () {
+        $("#accordion").accordion();
+        $('.arrow-right').click(function () {
+            $('.slider').animate({ scrollLeft: '+=240' }, 150);
+        });
+        $('.arrow-left').click(function () {
+            $('.slider').animate({ scrollLeft: '-=240' }, 150);
+        });
+        $('.preview').click(function () {
+            $(this).fadeOut(150);
+        });
+        $('.popup3 .lnk-close').click(function (evt) {
+            evt.preventDefault();
+            $(this).closest('.popup3').fadeOut(150);
+        });
+        $(document).tooltip();
+    }());
+</script>

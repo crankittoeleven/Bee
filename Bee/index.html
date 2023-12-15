@@ -1,0 +1,218 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DXGRJ2VF9Y"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-DXGRJ2VF9Y');
+    </script>
+    <meta name="google-site-verification" content="4FMjCqrIYkkzxOqAMJkEJDGV_vOwCq-_I4m-2vACEaw" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gnomia | The Social Network for YOU!</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="app/css/site.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
+    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+    <script>
+        'user strict';
+        if ((localStorage.getItem('id') ? localStorage.getItem('id') : sessionStorage.getItem('id'))) {
+            location.href = '/app/#!/' + (localStorage.getItem('id') ? localStorage.getItem('id') : sessionStorage.getItem('id'));
+        }
+    </script>
+</head>
+<body class="body-login" data-simplebar>
+    <div class="wrapper">
+        <div class="login">
+            <img class="logo" src="app/images/logo.png" alt="" />
+            <section>
+                <h2>Join the Gnomia Network.</h2>
+                <span>Make the Difference.</span>
+                <div class="btn-signup active">SIGN UP</div>
+                <div class="btn-signin">SIGN IN</div>
+            </section>
+            <form class="frm-join" method="post" action="register.cshtml">
+                <div class="inner">
+                    <div class="input-container">
+                        <label for="first">First Name:</label>
+                        <input type="text" id="first" name="first" required />
+                    </div>
+                    <div class="input-container">
+                        <label for="last">Last Name:</label>
+                        <input type="text" id="last" name="last" required />
+                    </div>
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required />
+                    <label for="password">Password (6 or more characters):</label>
+                    <input type="password" id="password" name="password" required />
+                    <label for="repassword">Repeat Password:</label>
+                    <input type="password" id="repassword" name="repassword" required />
+                    <div><i class="material-icons active">toggle_on</i>Remember me<input type="hidden" id="remember" name="remember" value="true" required /></div>
+                    <p>
+                        By clicking Submit, you agree to our <a href="javascript:void(0)" class="lnk-privacy">Privacy Policy</a>.
+                    </p>
+                    <span class="error" style="display:none;color:red;">Invalid Input.</span>
+                </div>
+                <button type="submit" class="btn-submit">SUBMIT</button>
+            </form>
+            <form class="frm-login" method="post" action="login.cshtml" style="display:none;">
+                <div class="inner">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required />
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required />
+                    <div><i class="material-icons active">toggle_on</i>Remember me<input type="hidden" id="remember" name="remember" value="true" required /></div>
+                    <p><a href="javascript:void(0)" class="lnk-reset">Forgot Password?</a></p>
+                </div>
+                <button type="submit" class="btn-submit">SUBMIT</button>
+            </form>
+        </div>
+    </div>
+    <div class="popup4">
+        <h3>Privacy Policy</h3>
+
+        <p>Effective date: January 1, 2021</p>
+
+
+        <p>Beewaxx ("us", "we", or "our") operates the https://joingnomia.com website (the "Service").</p>
+
+        <p>This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.</p>
+
+        <p>We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, accessible from https://joingnomia.com/</p>
+
+        <p>We collect several different types of information for various purposes to provide and improve our Service to you.</p>
+
+        <p>While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you ("Personal Data"). Personally identifiable information may include, but is not limited to:</p>
+
+        <ul>
+            <li>Email address</li>
+            <li>First name and last name</li>
+            <li>Cookies and Usage Data</li>
+        </ul>
+        <br />
+
+        <p>We may also collect information how the Service is accessed and used ("Usage Data"). This Usage Data may include information such as your computer's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that you visit, the time and date of your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</p>
+
+        <p>We use cookies and similar tracking technologies to track the activity on our Service and hold certain information.</p>
+        <p>Cookies are files with small amount of data which may include an anonymous unique identifier. Cookies are sent to your browser from a website and stored on your device. Tracking technologies also used are beacons, tags, and scripts to collect and track information and to improve and analyze our Service.</p>
+        <p>You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Service.</p>
+        <p>Examples of Cookies we use:</p>
+        <ul>
+            <li>Session Cookies. We use Session Cookies to operate our Service.</li>
+            <li>Preference Cookies. We use Preference Cookies to remember your preferences and various settings.</li>
+            <li>Security Cookies. We use Security Cookies for security purposes.</li>
+        </ul>
+        <br />
+
+        <p>Gnomia uses the collected data for various purposes:</p>
+        <ul>
+            <li>To provide and maintain the Service</li>
+            <li>To notify you about changes to our Service</li>
+            <li>To allow you to participate in interactive features of our Service when you choose to do so</li>
+            <li>To provide customer care and support</li>
+            <li>To provide analysis or valuable information so that we can improve the Service</li>
+            <li>To monitor the usage of the Service</li>
+            <li>To detect, prevent and address technical issues</li>
+        </ul>
+        <br />
+        <p>Your information, including Personal Data, may be transferred to — and maintained on — computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from your jurisdiction.</p>
+        <p>If you are located outside Germany and choose to provide information to us, please note that we transfer the data, including Personal Data, to Germany and process it there.</p>
+        <p>Your consent to this Privacy Policy followed by your submission of such information represents your agreement to that transfer.</p>
+        <p>Gnomia will take all steps reasonably necessary to ensure that your data is treated securely and in accordance with this Privacy Policy and no transfer of your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of your data and other personal information.</p>
+        <br />
+
+        <p>Gnomia may disclose your Personal Data in the good faith belief that such action is necessary to:</p>
+        <ul>
+            <li>To comply with a legal obligation</li>
+            <li>To protect and defend the rights or property of Gnomia</li>
+            <li>To prevent or investigate possible wrongdoing in connection with the Service</li>
+            <li>To protect the personal safety of users of the Service or the public</li>
+            <li>To protect against legal liability</li>
+        </ul>
+        <br />
+        <p>The security of your data is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Data, we cannot guarantee its absolute security.</p>
+
+        <p>We may employ third party companies and individuals to facilitate our Service ("Service Providers"), to provide the Service on our behalf, to perform Service-related services or to assist us in analyzing how our Service is used.</p>
+        <p>These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
+
+        <p>We may use third-party Service Providers to monitor and analyze the use of our Service.</p>
+        <ul>
+            <li>
+                Google Analytics<br /><br />
+                <p>Google Analytics is a web analytics service offered by Google that tracks and reports website traffic. Google uses the data collected to track and monitor the use of our Service. This data is shared with other Google services. Google may use the collected data to contextualize and personalize the ads of its own advertising network.</p>
+                <p>You can opt-out of having made your activity on the Service available to Google Analytics by installing the Google Analytics opt-out browser add-on. The add-on prevents the Google Analytics JavaScript (ga.js, analytics.js, and dc.js) from sharing information with Google Analytics about visits activity.</p>                <p>For more information on the privacy practices of Google, please visit the Google Privacy & Terms web page: <a href="https://policies.google.com/privacy?hl=en">https://policies.google.com/privacy?hl=en</a></p>
+            </li>
+        </ul>
+
+        <p>Our Service may contain links to other sites that are not operated by us. If you click on a third party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit.</p>
+        <p>We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.</p>
+
+        <p>Our Service does not address anyone under the age of 18 ("Children").</p>
+        <p>We do not knowingly collect personally identifiable information from anyone under the age of 18. If you are a parent or guardian and you are aware that your Children has provided us with Personal Data, please contact us. If we become aware that we have collected Personal Data from children without verification of parental consent, we take steps to remove that information from our servers.</p>
+
+        <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+        <p>We will let you know via email and/or a prominent notice on our Service, prior to the change becoming effective and update the "effective date" at the top of this Privacy Policy.</p>
+        <p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+
+        <p>If you have any questions about this Privacy Policy, please contact us:</p>
+        <ul>
+            <li>By email: info@ironheaddigital.de</li>
+        </ul>
+        <br />
+        <a class="lnk-close" href="javascript:void(0)">Close</a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        (function () {
+            $('.material-icons').click(function () {
+                $(this).toggleClass('active');
+                if ($(this).html() === 'toggle_on') {
+                    $(this).html('toggle_off');
+                    $(this).next().val('false');
+                } else {
+                    $(this).html('toggle_on');
+                    $(this).next().val('true');
+                }
+            });
+            $('.btn-signup').click(function () {
+                $('.frm-join').show();
+                $('.frm-login').hide();
+                $('div').removeClass('active');
+                $(this).addClass('active');
+            });
+            $('.btn-signin').click(function () {
+                $('.frm-join').hide();
+                $('.frm-login').show();
+                $('div').removeClass('active');
+                $(this).addClass('active');
+            });
+            if (location.href.indexOf('error') > 0) {
+                $('.error').show();
+            }
+            $('.lnk-close').click(function () {
+                $(this).parent().fadeOut(150);
+            });
+            $('.lnk-privacy').click(function () {
+                $('.popup4').fadeIn(150);
+            });
+            $('.lnk-reset').click(function () {
+                var email = prompt('Please, enter your email address:');
+                $.get('../api/bee/resetpassword/?email=' + email)
+                    .done(function () {
+                        alert('Your password has been reset. Please, check your inbox.');
+                    }).fail(function (error) {
+                        alert(JSON.parse(error.responseText).ExceptionMessage);
+                    });
+            });
+        }());
+    </script>
+</body>
+</html>

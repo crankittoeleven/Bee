@@ -1,0 +1,11 @@
+﻿<div class="groups">
+    <div class="item panel" ng-repeat="g in groups">
+        <img ng-src="images/{{g.image}}" alt="" />
+        <section>
+            <h4>{{g.title}}</h4>
+            <span>{{g.count}} Members</span>
+            <a ng-hide="g.isMember" ng-click="joinGroup(g.title)" class="btn" style="cursor:pointer;">JOIN</a>
+            <a ng-show="g.isMember" ng-click="exitGroup(g.title)" class="btn" style="cursor:pointer;">EXIT</a>
+        </section>
+    </div>
+</div>

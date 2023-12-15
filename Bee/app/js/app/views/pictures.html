@@ -1,0 +1,13 @@
+﻿<div class="images">
+    <div ng-repeat="p in pictures" class="item" style="background-image:url(../users/{{pageId}}/{{p}});background-size:cover;background-position:center center;cursor:pointer;" ng-click="preview('../users/' + pageId + '/' + p)">
+        <i class="material-icons" ng-if="isOwner" ng-click="deletePicture($event, p); $event.stopPropagation();">delete</i>
+    </div>
+</div>
+<script>
+    'use strict';
+    (function () {
+        $('.preview').click(function () {
+            $(this).fadeOut(150);
+        });
+    }());
+</script>

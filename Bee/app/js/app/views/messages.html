@@ -1,0 +1,17 @@
+﻿<div class="messages panel">
+    <ul>
+        <li ng-click="getMessages(f.Id)" onclick="$('.messages li').css('font-weight', 'normal');$(this).css('font-weight', 'bold');" ng-repeat="f in friends"><img class="img-profile-xs" ng-src="../users/{{f.Id}}/avatar.png" />{{f.FirstName}} {{f.LastName}} ({{f.IsOnline ? 'online' : 'offline'}}) <span style="font-size:8px;vertical-align:top;" ng-show="f.hasNew">NEW!</span></li>
+    </ul>
+    <div class="col-right">
+        <form class="frm-messages" ng-submit="addMessage($event)">
+            <img class="img-profile-sm" src="../users/{{user.Id}}/avatar.png" alt="" />
+            <input class="txt-message" type="text" placeholder="Enter Message&hellip;" />
+        </form>
+        <div class="content">
+            <div class="message" ng-repeat="m in messages">
+                <img class="img-profile-xs" ng-src="../users/{{m.From.Id}}/avatar.png" alt="" />
+                <p>{{m.Content}}</p>
+            </div>
+        </div>
+    </div>
+</div>

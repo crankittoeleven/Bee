@@ -1,0 +1,165 @@
+﻿<div class="achievements panel">
+    <h3>Achievements</h3>
+    <img ng-src="images/{{level}}.png" alt="" />
+    <h2 style="text-transform:capitalize;">{{level}} :)</h2>
+    <p>
+        John has <a class="anchor" ng-href="#!/{{pageId}}/start">posted</a> {{postCount}} times, uploaded {{pictureCount}} <a class="anchor" ng-href="#!/{{pageId}}/pictures">pictures</a> and made {{friendCount}} <a class="anchor" ng-href="#!/{{pageId}}/friends">friendships</a>.
+    </p>
+</div>
+<div class="posts">
+    <div ng-if="isOwner" class="add panel">
+        <ul class="tabs">
+            <li class="active tab-post" data-msg="What's New&hellip;">Post</li>
+            <li class="tab-image" data-msg="Enter Image URL&hellip;">Image</li>
+            <li data-msg="Enter YouTube URL&hellip;">Video</li>
+            <li ng-click="addPost()"><i class="material-icons">done</i></li>
+        </ul>
+        <img class="img-profile-md owner-avatar" ng-src="{{user.avatar}}?{{getRandom()}}" alt="" />
+        <textarea class="post" placeholder="What's New&hellip;"></textarea>
+        <input type="hidden" class="post-type" value="text" />
+        <div class="bottom">
+            <i class="material-icons add-link">link</i><i class="material-icons add-loc">place</i><i class="material-icons add-emoji">sentiment_satisfied_alt</i>
+        </div>
+        <select class="slc-group">
+            <option value="">Personal</option>
+            <option ng--repeat="g in groups">{{g}}</option>
+        </select>
+        <div class="emojis">
+            <div>😀</div>
+            <div>😁</div>
+            <div>😇</div>
+            <div>😍</div>
+            <div>🤑</div>
+            <div>🤓</div>
+            <div>😎</div>
+            <div>🤡</div>
+            <div>😛</div>
+            <div>😷</div>
+            <div>🥶</div>
+            <div>😈</div>
+            <div>💩</div>
+            <div>👽</div>
+            <div>😡</div>
+            <div>🥳</div>
+            <div>💪</div>
+            <div>👍</div>
+            <div>👎</div>
+            <div>✌️</div>
+            <div>🤘</div>
+            <div>🤙</div>
+            <div>🤟</div>
+            <div>👉</div>
+        </div>
+    </div>
+    <div class="item" ng-repeat="p in posts">
+        <div class="top">
+            <a ng-href="#!/{{p.Author.Id}}">
+                <img id="post-avatar" class="img-profile-sm" ng-src="../users/{{p.Author.Id}}/avatar.png?{{getRandom()}}" alt="" />
+                <span class="author">
+                    <u>{{p.Author.FirstName}} {{p.Author.LastName}}</u>
+                </span>
+            </a>
+            <span class="date">
+                &#149; {{p.Created}}
+            </span>
+            <span class="group" ng-if="p.Group">&#149; For the <strong> {{p.Group}} </strong> group.</span>
+            <i class="material-icons" ng-if="isOwner" ng-click="deletePost($event, p.Id)">delete</i>
+        </div>
+        <div class="content">
+            <div class="post-content" ng-bind-html="p.Content | unsafe"></div>
+            <ul>
+                <li class="comment" ng-repeat="c in p.comments"><a ng-href="#!/{{c.Author.Id}}"><strong><u>{{c.Author.FirstName}}</u> wrote:</strong> <img class="img-profile-xs" ng-src="../users/{{c.Author.Id}}/avatar.png" alt="" /></a>{{c.Content}}</li>
+            </ul>
+            <form class="frm-comment" ng-submit="addComment($event, p.Id)">
+                <img class="img-profile-sm" ng-src="{{user.avatar}}" alt="" />
+                <input class="txt-comment" type="text" placeholder="Enter Comment&hellip;" />
+            </form>
+        </div>
+        <div class="bottom">
+            <i class="material-icons icn-comment" onclick="$(this).parent().parent().find('.frm-comment').fadeToggle(150);">chat_bubble</i><i class="material-icons" ng-click="addLike($event, p.Id)" title="{{p.Likes}}">thumb_up</i><i ng-click="sharePost(p.Id)" class="material-icons">share</i>
+        </div>
+    </div>
+</div>
+<img class="ad panel" src="images/ad.png" alt="" />
+<script>
+    (function () {
+        'use strict';
+        $(document).off('click', '.add-emoji');
+        $(document).off('click', '.add-link');
+        $(document).off('click', '.add-loc');
+        $(document).off('click', '.emojis div');
+        $(document).off('click', '.tabs li:not(:last-child)');
+        $(document).on('click', '.tabs li:not(:last-child)', function () {
+            $('.post').attr('placeholder', $(this).attr('data-msg'));
+            $('.tabs li').removeClass('active');
+            $(this).addClass('active');
+            if ($(this).attr('class').indexOf('post') >= 0) {
+                $(this).parent().parent().find('.bottom').html('<i class="material-icons add-link">link</i><i class="material-icons add-loc">place</i><i class="material-icons add-emoji">sentiment_satisfied_alt</i>');
+                $('.post-type').val('text');
+                $('.add-link').click(function () {
+                    $('.post').val($('.post').val() + '[url=]link text here[/url]');
+                });
+                $('.add-loc').click(function () {
+                    $('.post').val($('.post').val() + '[loc=/]');
+                });
+                $('.add-emoji').click(function () {
+                    if ($('.emojis').css('display') === 'none') {
+                        $('.emojis').css('display', 'flex');
+                    } else {
+                        $('.emojis').css('display', 'none');
+                    }
+                });
+                $(document).on('click', '.emojis div', function (e) {
+                    $('.post').val($('.post').val() + $(this).html());
+                });
+            } else if ($(this).attr('class').indexOf('image') >= 0) {
+                $(this).parent().parent().find('.bottom').html('<i class="material-icons">vertical_align_top</i><form method="post" action="../UploadImage.cshtml" target="imageFrame" class="frm-image" enctype="multipart/form-data"><input type="file" id="file-image" name="image" accept=".png, .PNG, .jpg, .JPG, .gif, .GIF" /><input type="hidden" name="id" value="' + (localStorage.getItem('id') ? localStorage.getItem('id') : sessionStorage.getItem('id')) + '" /><input type="hidden" name="token" value="' + (localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')) + '" /></form ><iframe id="imageFrame" name="imageFrame" src="" style="display:none;"></iframe>');
+                $('.post-type').val('image');
+                $('#file-image').change(function () {
+                    $('.frm-image').submit();
+                    $('.preloader-line').animate({ width: '100%' }, 7000, 'swing', function () {
+                        $('.preloader-line').css('width', 0);
+                        $('.post').val(document.getElementById('file-image').files[0].name);
+                    });
+                });
+                $(document).off('click', '.add-emoji');
+                $(document).off('click', '.add-link');
+                $(document).off('click', '.add-loc');
+                $(document).off('click', '.emojis div');
+            } else {
+                $(this).parent().parent().find('.bottom').html('');
+                $('.post-type').val('video');
+                $(document).off('click', '.add-emoji');
+                $(document).off('click', '.add-link');
+                $(document).off('click', '.add-loc');
+                $(document).off('click', '.emojis div');
+            }
+        });
+        $(document).on('focus', '.post', function () {
+            $(this).css('height', '165px');
+        });
+        $(document).on('blur', '.post', function () {
+            $(this).css('height', '84px');
+        });
+        $(document).on('click', '.add-link', function () {
+            $('.post').val($('.post').val() + '[url=]link text here[/url]');
+        });
+        $(document).on('click', '.add-loc', function () {
+            $('.post').val($('.post').val() + '[loc=/]');
+        });
+        $(document).on('click', '.add-emoji', function () {
+            if ($('.emojis').css('display') === 'none') {
+                $('.emojis').css('display', 'flex');
+            } else {
+                $('.emojis').css('display', 'none');
+            }
+        });
+        $(document).on('click', '.preview', function () {
+            $(this).fadeOut(150);
+        });
+        $(document).on('click', '.emojis div', function () {
+            $('.post').val($('.post').val() + $(this).html());
+        });
+        $(document).tooltip();
+    }());
+</script>

@@ -1,0 +1,63 @@
+﻿@using Bee.Models;
+@using System.Security.Cryptography;
+@using System.Text;
+@using System.Drawing.Imaging;
+@using System.Drawing;
+@using System.Drawing.Drawing2D;
+@{
+    var file = Request.Files[0];
+    var id = Request.Form["id"];
+    var token = Request.Form["token"];
+
+    User user;
+
+    using (AppDbContext _db = new AppDbContext())
+    {
+        user = _db.Users.Where(u => u.Id.ToString() == id).FirstOrDefault();
+
+        using (SHA384 sha = new SHA384Managed())
+        {
+            if (BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(user.Password + user.Email))).Replace("-", string.Empty).ToLower() == token)
+            {
+                file.SaveAs(Server.MapPath("~/users/" + id + "/avatar.png"));
+
+                using (Image image = Image.FromFile(Server.MapPath("~/users/" + id + "/avatar.png")))
+                {
+                    ImageCodecInfo pngInfo = ImageCodecInfo.GetImageEncoders().Where(codecInfo => codecInfo.MimeType == "image/png").First();
+
+                    int left = (int)(image.Width > image.Height ? Math.Round((double)((image.Width - image.Height) / 2)) : 0);
+                    int top = (int)(image.Height > image.Width ? Math.Round((double)((image.Height - image.Width) / 2)) : 0);
+                    int width = Math.Min(image.Width, image.Height);
+                    int height = width;
+
+                    Bitmap bitmap = new Bitmap(width, height);
+                    Image final = null;
+
+                    using (Graphics g = Graphics.FromImage(bitmap))
+                    {
+                        g.SmoothingMode = SmoothingMode.HighQuality;
+                        g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                        g.CompositingQuality = CompositingQuality.HighQuality;
+                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        g.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                        new Rectangle(left, top, width, height), GraphicsUnit.Pixel);
+                    }
+
+                    image.Dispose();
+                    final = bitmap;
+
+                    using (EncoderParameters encParams = new EncoderParameters(1))
+                    {
+                        encParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, (long)100);
+                        final.Save(Server.MapPath("~/users/" + id + "/avatar.png"), pngInfo, encParams);
+                    }
+
+                    if (bitmap != null)
+                    {
+                        bitmap.Dispose();
+                    }
+                }
+            }
+        }
+    }
+}

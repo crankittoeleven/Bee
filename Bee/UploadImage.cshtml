@@ -1,0 +1,26 @@
+﻿@using Bee.Models;
+@using System.Security.Cryptography;
+@using System.Text;
+@using System.Drawing.Imaging;
+@using System.Drawing;
+@using System.Drawing.Drawing2D;
+@{
+    var file = Request.Files[0];
+    var id = Request.Form["id"];
+    var token = Request.Form["token"];
+
+    User user;
+
+    using (AppDbContext _db = new AppDbContext())
+    {
+        user = _db.Users.Where(u => u.Id.ToString() == id).FirstOrDefault();
+
+        using (SHA384 sha = new SHA384Managed())
+        {
+            if (BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(user.Password + user.Email))).Replace("-", string.Empty).ToLower() == token)
+            {
+                file.SaveAs(Server.MapPath("~/users/" + id + "/" + file.FileName.Substring(file.FileName.LastIndexOf('\\') + 1)));
+            }
+        }
+    }
+}
